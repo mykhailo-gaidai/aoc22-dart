@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:fixnum/fixnum.dart';
-
 void main() {
   part1('bin/11/test');
   part1('bin/11/input');
