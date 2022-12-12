@@ -65,27 +65,27 @@ void part1(String file) {
   var input = File(file).readAsLinesSync();
   List<Monkey> monkeys = [];
 
-  Function(Int64)? operation;
-  List<Int64> items = [];
+  Function(int)? operation;
+  List<int> items = [];
   List<int> test = [];
 
   for (var line in input) {
     if (line.contains('Starting items')) {
-      items = line.split(': ')[1].split(', ').map((e) => Int64.parseInt(e)).toList();
+      items = line.split(': ')[1].split(', ').map((e) => int.parse(e)).toList();
     } else if (line.contains('Operation')) {
       var op = line.split(' = ')[1].split(' ');
-      operation = (Int64 operand1) {
+      operation = (int operand1) {
         if (op[1] == '*') {
           if (op[2] == 'old') {
             return operand1 * operand1;
           } else {
-            return operand1 * Int64.parseInt(op[2]);
+            return operand1 * int.parse(op[2]);
           }
         } else {
           if (op[2] == 'old') {
             return operand1 + operand1;
           } else {
-            return operand1 + Int64.parseInt(op[2]);
+            return operand1 + int.parse(op[2]);
           }
         }
       };
@@ -111,7 +111,7 @@ void part1(String file) {
         var item = monkey.items.removeAt(0);
         var worryLevel = ((monkey.operation(item).toInt()) / 3).floor();
         var newMonkeyIndex = (worryLevel % monkey.test[0] == 0) ? monkey.test[1] : monkey.test[2];
-        monkeys[newMonkeyIndex].items.add(Int64(worryLevel));
+        monkeys[newMonkeyIndex].items.add(worryLevel);
         inspections[i] = (inspections[i] ?? 0) + 1;
       }
     }
@@ -124,8 +124,8 @@ void part1(String file) {
 }
 
 class Monkey {
-  List<Int64> items = [];
-  Function(Int64) operation;
+  List<int> items = [];
+  Function(int) operation;
   List<int> test;
 
   Monkey(this.items, this.operation, this.test);
