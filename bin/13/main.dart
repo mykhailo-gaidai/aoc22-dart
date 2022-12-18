@@ -13,8 +13,16 @@ void main() {
   assert(!(compare(jsonDecode('[1,[2,[3,[4,[5,6,7]]]],8,9]'), jsonDecode('[1,[2,[3,[4,[5,6,0]]]],8,9]')) == -1));
   part1('bin/13/test');
   part1('bin/13/input');
-  // 6122 is too low
-  // 6323 is wrong
+  part2('bin/13/test');
+  part2('bin/13/input');
+}
+
+void part2(String file) {
+  var input = File(file).readAsLinesSync().where((element) => element.isNotEmpty).toList()
+    ..addAll(['[[2]]', '[[6]]'])
+    ..sort((a, b) => compare(jsonDecode(a), jsonDecode(b)));
+  final result = (input.indexOf('[[2]]') + 1) * (input.indexOf('[[6]]') + 1);
+  print('Part 2: $file: $result');
 }
 
 void part1(String file) {
