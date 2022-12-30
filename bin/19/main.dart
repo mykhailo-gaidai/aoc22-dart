@@ -1,40 +1,25 @@
 import 'dart:io';
 import 'dart:math';
 
-final maxMinutes = 24;
-
 void main() {
   var testBlueprints = readBlueprints('bin/19/test');
   var blueprints = readBlueprints('bin/19/input');
-  print('part1, test, ${solve1(testBlueprints)}');
-  print('part1, test, ${solve1(blueprints)}');
+  // print('part1, test, ${solve(testBlueprints, 24)}');
+  // print('part1, test, ${solve(blueprints, 24)}');
+  print('part2, test, ${getMaxGeodes(testBlueprints[0], 32)}');
+  print('part2, test, ${getMaxGeodes(testBlueprints[1], 32)}');
+  print('part2, input, ${blueprints.take(3).map((e) => getMaxGeodes(e, 32)).reduce((value, element) => value * element)}');
 }
 
-var cache = <State, State>{};
+var maxSoFar = 0;
 
-int findMaxGeodes(Blueprint blueprint) {
-  var initialState = State(blueprint);
-  var current = initialState;
-  current = current.bestBuildClayRobot();
-  current = current.bestBuildObsidianRobot();
-  current = current.bestBuildGeodeRobot();
-
-  while (true) {
-    var temp = current.bestBuildGeodeRobot();
-    if (temp.minutesPassed < maxMinutes) {
-      current = temp;
-    } else {
-      break;
-    }
-  }
-  current = current.step(maxMinutes - current.minutesPassed);
-
-  return current.resources.last;
-}
-
-int solve1DFS(State state) {
-
+int _solveDFS(State state, int maxMinutes) {
   if (state.minutesPassed == maxMinutes) {
+    return state.resources.last;
+  }
+
+  var potential = state.resources.last + List.generate((maxMinutes - state.minutesPassed), (index) => index + state.robots.last).reduce((value, element) => value + element);
+  if (potential < maxSoFar) {
     return state.resources.last;
   }
 
@@ -52,20 +37,28 @@ int solve1DFS(State state) {
     options.add(state.buildGeodeRobot());
   }
 
-  var outcomes = options.where((element) => element.minutesPassed <= maxMinutes).map((e) => solve1DFS(e));
+  var outcomes = options.where((element) => element.minutesPassed < maxMinutes).map((e) => _solveDFS(e, maxMinutes));
   if (outcomes.isEmpty) {
     return state.resources.last + (maxMinutes - state.minutesPassed) * state.robots.last;
   }
   var bestOutcome = outcomes.reduce((value, element) => value > element ? value : element);
 
+  if (bestOutcome > maxSoFar) {
+    maxSoFar = bestOutcome;
+  }
+
   return bestOutcome;
 }
 
-int solve1(List<Blueprint> blueprints) {
+int getMaxGeodes(Blueprint blueprint, int maxMinutes) {
+  maxSoFar = 0;
+  return _solveDFS(State(blueprint), maxMinutes);
+}
+
+int solve(List<Blueprint> blueprints, int maxMinutes) {
   var result = 0;
   for (var b in blueprints) {
-    // result += findMaxGeodes(b) * b.index;
-    result += solve1DFS(State(b)) * b.index;
+    result += _solveDFS(State(b), maxMinutes) * b.index;
   }
   return result;
 }
