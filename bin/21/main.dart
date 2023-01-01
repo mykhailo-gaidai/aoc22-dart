@@ -1,11 +1,11 @@
 import 'dart:io';
 
 void main() {
-  assert(solve('bin/21/test') == 152);
-  print(solve('bin/21/input'));
+  assert(solve1('bin/21/test') == 152);
+  assert(solve1('bin/21/input') == 84244467642604);
 }
 
-int solve(String filename) {
+int solve1(String filename) {
   var input = File(filename).readAsLinesSync();
 
   var numbers = <String, int>{};
