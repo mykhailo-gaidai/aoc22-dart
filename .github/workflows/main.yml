@@ -15,6 +15,14 @@ jobs:
     # set name to the label name
     name: the-${{ github.event.label.name }}-test
     steps:
+      # mask env and vars
+      - name: mask env and vars
+        run: |
+          echo "::add-mask::${{ env.ENV_ONE }}"
+          echo "::add-mask::${{ env.ENV_TWO }}"
+          echo "::add-mask::${{ vars.VAR_ONE }}"
+          echo "::add-mask::${{ vars.VAR_TWO }}"
+
       - name: set one 
         if: github.event.label.name == 'one'
         run: |
