@@ -9,33 +9,20 @@ env:
   ENV_TWO: 22222
 
 jobs:
+  first-job:
+    if: github.event.label.name == 'one' || github.event.label.name == 'two'
+    runs-on: ubuntu-latest
+    outputs:
+      FIRST_RESULT: ${{ env.FIRST_RESULT }}
+    steps:
+      - run: |
+          echo "FIRST_RESULT=first-result" >> $GITHUB_ENV
+
   the-test:
     if: github.event.label.name == 'one' || github.event.label.name == 'two'
     runs-on: ubuntu-latest
     # set name to the label name
     name: the-${{ github.event.label.name }}-test
+    needs: first-job
     steps:
-      # mask env and vars
-      - name: mask env and vars
-        run: |
-          echo "::add-mask::${{ env.ENV_ONE }}"
-          echo "::add-mask::${{ env.ENV_TWO }}"
-          echo "::add-mask::${{ vars.VAR_ONE }}"
-          echo "::add-mask::${{ vars.VAR_TWO }}"
-
-      - name: set one 
-        if: github.event.label.name == 'one'
-        run: |
-          echo "VAR_ENV=${{ env.ENV_ONE }}" >> $GITHUB_ENV
-          echo "VAR_VAR=${{ vars.VAR_ONE }}" >> $GITHUB_ENV
-          echo "VAR_SECRET=${{ secrets.SECRET_ONE }}" >> $GITHUB_ENV
-      - name: set two
-        if: github.event.label.name == 'two'
-        run: |
-          echo "VAR_ENV=${{ env.ENV_TWO }}" >> $GITHUB_ENV
-          echo "VAR_VAR=${{ vars.VAR_TWO }}" >> $GITHUB_ENV
-          echo "VAR_SECRET=${{ secrets.SECRET_TWO }}" >> $GITHUB_ENV
-      - run: |
-          echo $VAR_ENV
-          echo $VAR_VAR
-          echo $VAR_SECRET
+      - run: echo ${{ needs.first-job.outputs.FIRST_RESULT }}
