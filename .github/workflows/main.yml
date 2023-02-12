@@ -18,6 +18,7 @@ jobs:
           THE_VAR=FIREBASE_${{github.event.label.name}}
           echo $THE_VAR
           echo ${THE_VAR^^}
+          echo ${{ env[THE_VAR] }}
 
     
       
