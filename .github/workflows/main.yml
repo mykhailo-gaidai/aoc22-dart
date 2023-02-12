@@ -14,18 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     name: the-${{ github.event.label.name }}-test
     steps:
-      - name: set env var
-        if: github.event.label.name == 'one'
-        run: |
-          echo "THE_VAR=${{ env.FIREBASE_ONE }}" >> GITHUB_ENV
-
-      - name: set env var
-        if: github.event.label.name == 'two'
-        run: |
-          echo "THE_VAR=${{ env.FIREBASE_TWO }}" >> GITHUB_ENV
-
       - run: |
-          echo ${{ env.THE_VAR }}
+          THE_VAR=FIREBASE_${{ github.event.label.name }}
+          echo ${{ env[`${THE_VAR^^}`] }}
 
     
       
