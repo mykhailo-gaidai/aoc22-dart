@@ -13,10 +13,11 @@ jobs:
     if: github.event.label.name == 'one' || github.event.label.name == 'two'
     runs-on: ubuntu-latest
     name: the-${{ github.event.label.name }}-test
-    env:
-      THE_VAR: ${{ env.FIREBASE_ONE }}
     steps:
-      - run: |
+      - name: run script
+        env:
+          THE_VAR: ${{ env.FIREBASE_ONE }}
+        run: |
           echo ${{ env.THE_VAR }}
     
       
