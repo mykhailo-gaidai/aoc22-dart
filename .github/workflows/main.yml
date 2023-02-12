@@ -18,28 +18,12 @@ jobs:
       - name: set one 
         if: github.event.label.name == 'one'
         run: |
-          echo "THE_VAR=${{ env.FIREBASE_ONE }}" >> GITHUB_ENV
-          echo 'test_var=111' >> GITHUB_ENV
+          echo "THE_VAR=${{ env.FIREBASE_ONE }}" >> $GITHUB_ENV
       - name: set two
         if: github.event.label.name == 'two'
         run: |
-          echo "THE_VAR=${{ env.FIREBASE_TWO }}" >> GITHUB_ENV
-          echo 'test_var=222' >> GITHUB_ENV
+          echo "THE_VAR=${{ env.FIREBASE_TWO }}" >> $GITHUB_ENV
       
-      - run: echo $GITHUB_ENV
-      - run: cat $GITHUB_ENV
-      - run: echo 'the var is ' $THE_VAR
-      - run: echo 'the var is ' ${{ env.THE_VAR }}
-      - run: echo 'the test var is ' $test_var
-      - run: echo 'the test var is ' ${{ env.test_var }}
-
-      - name: Set the value
-        id: step_one
-        run: |
-          echo "action_state=yellow" >> $GITHUB_ENV
-      - name: Use the value
-        id: step_two
-        run: |
-          echo "${{ env.action_state }}" # This will output 'yellow'
-    
-      
+      - run: |
+          echo $THE_VAR
+          echo ${{ env.THE_VAR }}      
