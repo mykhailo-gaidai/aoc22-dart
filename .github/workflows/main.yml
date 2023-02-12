@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     name: the-${{ github.event.label.name }}-test
     env:
-      THE_VAR: ${{ FIREBASE_`${github.event.label.name.toUpperCase()}` }}
+      THE_VAR: ${{ FIREBASE_`${{ github.event.label.name.toUpperCase() }}` }}
     steps:
       - run: |
           echo ${{ env.THE_VAR }}
