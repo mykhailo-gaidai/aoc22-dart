@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: run script
         env:
-          THE_VAR: ${{ env[`FIREBASE_${{ github.event.label.name.toUpperCase() }}`] }}
+          THE_VAR: ${{ env.FIREBASE_${{ github.event.label.name.toUpperCase() }} }}
         run: |
           echo ${{ env.THE_VAR }}
     
