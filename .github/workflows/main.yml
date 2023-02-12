@@ -1,0 +1,28 @@
+name: Test
+
+on:
+  pull_request:
+    types: [labeled]
+    
+env:
+  ENV_ONE: 11111
+  ENV_TWO: 22222
+
+jobs:
+  first-job:
+    if: github.event.label.name == 'one' || github.event.label.name == 'two'
+    runs-on: ubuntu-latest
+    outputs:
+      FIRST_RESULT: ${{ env.FIRST_RESULT }}
+    steps:
+      - run: |
+          echo "FIRST_RESULT=first-result" >> $GITHUB_ENV
+
+  the-test:
+    if: github.event.label.name == 'one' || github.event.label.name == 'two'
+    runs-on: ubuntu-latest
+    # set name to the label name
+    name: the-${{ github.event.label.name }}-test
+    needs: first-job
+    steps:
+      - run: echo ${{ needs.first-job.outputs.FIRST_RESULT }}
