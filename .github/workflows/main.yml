@@ -5,8 +5,8 @@ on:
     types: [labeled]
     
 env:
-  FIREBASE_ONE: 11111
-  FIREBASE_TWO: 22222
+  ENV_ONE: 11111
+  ENV_TWO: 22222
 
 jobs:
   the-test:
@@ -18,12 +18,16 @@ jobs:
       - name: set one 
         if: github.event.label.name == 'one'
         run: |
-          echo "THE_VAR=${{ env.FIREBASE_ONE }}" >> $GITHUB_ENV
+          echo "VAR_ENV=${{ env.ENV_ONE }}" >> $GITHUB_ENV
+          echo "VAR_VAR=${{ vars.VAR_ONE }}" >> $GITHUB_ENV
+          echo "VAR_SECRET=${{ secrets.SECRET_ONE }}" >> $GITHUB_ENV
       - name: set two
         if: github.event.label.name == 'two'
         run: |
-          echo "THE_VAR=${{ env.FIREBASE_TWO }}" >> $GITHUB_ENV
-      
+          echo "VAR_ENV=${{ env.ENV_TWO }}" >> $GITHUB_ENV
+          echo "VAR_VAR=${{ vars.VAR_TWO }}" >> $GITHUB_ENV
+          echo "VAR_SECRET=${{ secrets.SECRET_TWO }}" >> $GITHUB_ENV
       - run: |
-          echo $THE_VAR
-          echo ${{ env.THE_VAR }}      
+          echo $VAR_ENV
+          echo $VAR_VAR
+          echo $VAR_SECRET
