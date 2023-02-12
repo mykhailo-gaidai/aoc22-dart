@@ -1,0 +1,22 @@
+name: Test
+
+on:
+  pull_request:
+    types: labeled
+    
+env:
+  FIREBASE_ONE: 11111
+  FIREBASE_TWO: 22222
+
+jobs:
+  the-test:
+    if: github.event.label.name == 'one' || github.event.label.name == 'two'
+    runs-on: ubuntu-latest
+    name: the-${{ github.event.label.name }}-test
+    env:
+      THE_VAR: ${{ FIREBASE_`${github.event.label.name.toUpperCase()}` }}
+    steps:
+      - run: |
+          echo ${{ env.THE_VAR }}
+    
+      
