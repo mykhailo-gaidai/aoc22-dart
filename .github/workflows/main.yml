@@ -3,7 +3,6 @@ name: Test
 on:
   pull_request:
     types: labeled
-  push:
     
 env:
   FIREBASE_ONE: 11111
