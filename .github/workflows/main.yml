@@ -3,6 +3,7 @@ name: Test
 on:
   pull_request:
     types: labeled
+  push:
     
 env:
   FIREBASE_ONE: 11111
@@ -15,8 +16,9 @@ jobs:
     name: the-${{ github.event.label.name }}-test
     steps:
       - run: |
-          THE_VAR=FIREBASE_${{github.event.label.name.toUpperCase}}
+          THE_VAR=FIREBASE_${{github.event.label.name}}
           echo $THE_VAR
+          echo ${THE_VAR^^}
 
     
       
