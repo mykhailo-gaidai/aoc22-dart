@@ -2,7 +2,7 @@ name: Test
 
 on:
   pull_request:
-    types: labeled
+    types: [labeled]
     
 env:
   FIREBASE_ONE: 11111
@@ -12,11 +12,20 @@ jobs:
   the-test:
     if: github.event.label.name == 'one' || github.event.label.name == 'two'
     runs-on: ubuntu-latest
+    # set name to the label name
     name: the-${{ github.event.label.name }}-test
     steps:
-      - run: |
-          THE_VAR=FIREBASE_${{ github.event.label.name }}
-          echo ${{ env[`${THE_VAR^^}`] }}
-
+      - name: set one 
+        if: github.event.label.name == 'one'
+        run: |
+          echo "THE_VAR=${{ env.FIREBASE_ONE }}" >> GITHUB_ENV
+      - name: set two
+        if: github.event.label.name == 'two'
+        run: |
+          echo "THE_VAR=${{ env.FIREBASE_TWO }}" >> GITHUB_ENV
+      
+      - name: print
+        run: |
+          echo $THE_VAR
     
       
