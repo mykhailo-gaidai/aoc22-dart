@@ -15,7 +15,7 @@ jobs:
     name: the-${{ github.event.label.name }}-test
     steps:
       - run: |
-          THE_VAR=FIREBASE_${{github.event.label.name.toUpperCase()}}
+          THE_VAR=FIREBASE_${{github.event.label.name.toUpperCase}}
           echo $THE_VAR
 
     
