@@ -24,7 +24,6 @@ jobs:
         run: |
           echo "THE_VAR=${{ env.FIREBASE_TWO }}" >> GITHUB_ENV
       
-      - run: cat ${{ github.workspace }}/.env
       - run: echo $GITHUB_ENV
       - run: cat $GITHUB_ENV
       - run: echo 'the var is ' $THE_VAR
